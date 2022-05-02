@@ -2,12 +2,12 @@
 
 const TILE_CLASS = 'tile';
 const START_BTN_CLASS = 'startBtn';
-const HIDDEN_CLASS = '.hidden';
+const HIDDEN_CLASS = 'hidden';
 const TILE_TEMPLATE = document.getElementById('tileTemplate').innerHTML;
 const startBtn = document.getElementById('startBtn');
 const board = document.getElementById('board');
 const tilesArr = [];
-let counter = 1;
+let tileCounter = 1;
 
 startBtn.addEventListener('click', onStartClick);
 board.addEventListener('click', onTileClick);
@@ -21,25 +21,29 @@ function onStartClick() {
 
 function onTileClick (e) {
     if (e.target.classList.contains(TILE_CLASS)) {
-        console.log(e.target.classlist);
-        if (+e.target.id === counter) {
-            counter ++;
-            e.target.classlist.add(HIDDEN_CLASS);
-            console.log('tile hidden');
+        const tileClicked = e.target;
+        if (+tileClicked.id === tileCounter) {
+            tileClicked.classList.add(HIDDEN_CLASS);
+            tileCounter ++;
+            console.log(tileClicked.id + 'tile hidden');
         }
     }
 }
 
+function clearTile (el) {
+
+}
+
 function gameStart () {
-    randomiseBord();
+    shuffleBord();
     renderBoard();
 
 }
 
 
 
-function randomiseBord() {
-    counter = 1;
+function shuffleBord() {
+    tileCounter = 1;
     randomArr (25);
 }
 
