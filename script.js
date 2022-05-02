@@ -3,12 +3,12 @@
 const TILE_CLASS = 'tile';
 const START_BTN_CLASS = 'startBtn';
 const HIDDEN_CLASS = 'hidden';
+const WRONG_CLASS = 'wrong';
 const TILE_TEMPLATE = document.getElementById('tileTemplate').innerHTML;
 const WIN_TEMPLATE = document.querySelector('#winTemplate');
 const startEasy = document.getElementById('startEasy');
 const startNornal = document.getElementById('startNornal');
 const startHard = document.getElementById('startHard');
-
 const board = document.getElementById('board');
 
 const TILES = 25;
@@ -42,7 +42,8 @@ function onHardStartClick() {
     shuffleBord();
     renderBoard();
     timeToMemorize();
-    board.addEventListener('click', onHardTileClick);    
+    setTimeout(() =>
+    board.addEventListener('click', onHardTileClick),1000);    
   
 }
 
@@ -54,10 +55,12 @@ function onTileClick (e) {
             tileClicked.classList.toggle(HIDDEN_CLASS);
             tileCounter ++;
         }
+        if (+tileClicked.id > tileCounter) {
+            tileClicked.classList.toggle(WRONG_CLASS);
+            setTimeout(()=> tileClicked.classList.toggle(WRONG_CLASS), 500);
+        }
         if (tileCounter === TILES + 1) {
-          board.innerHTML = WIN_TEMPLATE.innerHTML;
-          board.removeEventListener('click', onTileClick);
-
+            win();
         }
     }
 }
@@ -67,17 +70,16 @@ function onHardTileClick (e) {
         const tileClicked = e.target;
         if (+tileClicked.id === tileCounter) {
             tileClicked.classList.toggle(HIDDEN_CLASS);
-            tileCounter ++;
+            tileCounter++;
         }
-        else {
+        if (+tileClicked.id > tileCounter) {
             tileClicked.classList.toggle(HIDDEN_CLASS);
             tileCounter = 1;
-            hideBoard();
+            setTimeout(hideBoard,500);
         }
         
         if (tileCounter === TILES + 1) {
             win();
-
         }
     }
 }
@@ -126,7 +128,7 @@ function interpolate(template, obj) {
 }
 
 function timeToMemorize() {
-    setTimeout(hideBoard, 10000);
+    setTimeout(hideBoard, 1000);
     }
 
 function hideBoard () {
