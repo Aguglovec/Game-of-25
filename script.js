@@ -4,47 +4,59 @@ const TILE_CLASS = 'tile';
 const START_BTN_CLASS = 'startBtn';
 const HIDDEN_CLASS = 'hidden';
 const TILE_TEMPLATE = document.getElementById('tileTemplate').innerHTML;
-const startBtn = document.getElementById('startBtn');
+const WIN_TEMPLATE = document.querySelector('#winTemplate');
+const startEasy = document.getElementById('startEasy');
+const startNornal = document.getElementById('startNornal');
+const startHard = document.getElementById('startHard');
+
 const board = document.getElementById('board');
+
+const TILES = 25;
 const tilesArr = [];
 let tileCounter = 1;
 
-startBtn.addEventListener('click', onStartClick);
 board.addEventListener('click', onTileClick);
 
+startEasy.addEventListener('click', onEasyStartClick);
+startNornal.addEventListener('click', onNormalStartClick);
+startHard.addEventListener('click', onHardStartClick);
 
 
-
-function onStartClick() {
-    gameStart();
+function onEasyStartClick() {
+    shuffleBord();
+    renderBoard();
 }
+
+function onNormalStartClick() {
+    onEasyStartClick();
+    setTimeout(hideBoard, 1000);
+  
+}
+
+function onHardStartClick() {
+    onNormalStartClick();
+    
+  
+}
+
 
 function onTileClick (e) {
     if (e.target.classList.contains(TILE_CLASS)) {
         const tileClicked = e.target;
         if (+tileClicked.id === tileCounter) {
-            tileClicked.classList.add(HIDDEN_CLASS);
+            tileClicked.classList.togglem;;(HIDDEN_CLASS);
             tileCounter ++;
-            console.log(tileClicked.id + 'tile hidden');
+        }
+        if (tileCounter === TILES + 1) {
+          board.innerHTML = WIN_TEMPLATE.innerHTML;
         }
     }
 }
 
-function clearTile (el) {
-
-}
-
-function gameStart () {
-    shuffleBord();
-    renderBoard();
-
-}
-
-
 
 function shuffleBord() {
     tileCounter = 1;
-    randomArr (25);
+    randomArr (TILES);
 }
 
 // Работает
@@ -73,6 +85,11 @@ function randomArr (max) {
 
 function renderBoard() {
     board.innerHTML = tilesArr.map(generateTileHtml).join('\n');
+
+}
+
+function hideBoard () {
+ board.innerHTML = board.innerHTML.replaceAll(`${TILE_CLASS}`,`${TILE_CLASS + ' ' + HIDDEN_CLASS}`);
 }
 
 function generateTileHtml (tile) {

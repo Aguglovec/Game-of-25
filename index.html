@@ -10,7 +10,9 @@
 </head>
 
 <body>
+    <h2>Find all tiles from 1 to 25</h2>
 <div class="container">
+
   <div class="board" id="board">
     <div class="tile" id="tile1">1</div>
     <div class="tile" id="tile2">2</div>
@@ -42,10 +44,18 @@
     <div class="tile" id="tile24">24</div>
     <div class="tile" id="tile25">25</div>
   </div>
-  <button class="startBtn" id="startBtn">Restart</button>
+  
+    <button class="startBtn" id="startEasy">Start EASY game</button>
+        <button class="startBtn" id="startNornal">Start NORMAL game</button>
+    <button class="startBtn" id="startHard">Start HARD game</button>
+
+  
 </div>
 <script type="text/template" id="tileTemplate">
   <div class="tile" id="{{index}}">{{index}}</div>
+</script>
+<script type="text/template" id="winTemplate">
+  <h1>Congats!<br>You won!</h1>
 </script>
 </body>
 
