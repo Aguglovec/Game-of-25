@@ -12,6 +12,7 @@ const startHard = document.getElementById('startHard');
 const board = document.getElementById('board');
 
 const TILES = 25;
+const DELAY = 1000;
 const tilesArr = [];
 let tileCounter = 1;
 
@@ -34,7 +35,8 @@ function onNormalStartClick() {
     shuffleBord();
     renderBoard();
     timeToMemorize();
-    board.addEventListener('click', onTileClick);
+    setTimeout(() =>
+    board.addEventListener('click', onTileClick),DELAY);    
 }
 
 function onHardStartClick() {
@@ -43,7 +45,7 @@ function onHardStartClick() {
     renderBoard();
     timeToMemorize();
     setTimeout(() =>
-    board.addEventListener('click', onHardTileClick),1000);    
+    board.addEventListener('click', onHardTileClick),DELAY);    
   
 }
 
@@ -128,7 +130,7 @@ function interpolate(template, obj) {
 }
 
 function timeToMemorize() {
-    setTimeout(hideBoard, 1000);
+    setTimeout(hideBoard, DELAY);
     }
 
 function hideBoard () {
