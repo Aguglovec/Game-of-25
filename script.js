@@ -15,7 +15,6 @@ const TILES = 25;
 const tilesArr = [];
 let tileCounter = 1;
 
-board.addEventListener('click', onTileClick);
 
 startEasy.addEventListener('click', onEasyStartClick);
 startNornal.addEventListener('click', onNormalStartClick);
@@ -23,19 +22,27 @@ startHard.addEventListener('click', onHardStartClick);
 
 
 function onEasyStartClick() {
+    removeListeners();
     shuffleBord();
     renderBoard();
+    board.addEventListener('click', onTileClick);
+
 }
 
 function onNormalStartClick() {
-    onEasyStartClick();
-    setTimeout(hideBoard, 1000);
-  
+    removeListeners();
+    shuffleBord();
+    renderBoard();
+    timeToMemorize();
+    board.addEventListener('click', onTileClick);
 }
 
 function onHardStartClick() {
-    onNormalStartClick();
-    
+    removeListeners();
+    shuffleBord();
+    renderBoard();
+    timeToMemorize();
+    board.addEventListener('click', onHardTileClick);    
   
 }
 
@@ -44,11 +51,33 @@ function onTileClick (e) {
     if (e.target.classList.contains(TILE_CLASS)) {
         const tileClicked = e.target;
         if (+tileClicked.id === tileCounter) {
-            tileClicked.classList.togglem;;(HIDDEN_CLASS);
+            tileClicked.classList.toggle(HIDDEN_CLASS);
             tileCounter ++;
         }
         if (tileCounter === TILES + 1) {
           board.innerHTML = WIN_TEMPLATE.innerHTML;
+          board.removeEventListener('click', onTileClick);
+
+        }
+    }
+}
+
+function onHardTileClick (e) {
+    if (e.target.classList.contains(TILE_CLASS)) {
+        const tileClicked = e.target;
+        if (+tileClicked.id === tileCounter) {
+            tileClicked.classList.toggle(HIDDEN_CLASS);
+            tileCounter ++;
+        }
+        else {
+            tileClicked.classList.toggle(HIDDEN_CLASS);
+            tileCounter = 1;
+            hideBoard();
+        }
+        
+        if (tileCounter === TILES + 1) {
+            win();
+
         }
     }
 }
@@ -85,11 +114,6 @@ function randomArr (max) {
 
 function renderBoard() {
     board.innerHTML = tilesArr.map(generateTileHtml).join('\n');
-
-}
-
-function hideBoard () {
- board.innerHTML = board.innerHTML.replaceAll(`${TILE_CLASS}`,`${TILE_CLASS + ' ' + HIDDEN_CLASS}`);
 }
 
 function generateTileHtml (tile) {
@@ -97,6 +121,25 @@ function generateTileHtml (tile) {
 }
 
 function interpolate(template, obj) {
-        template = template.replaceAll(`{{index}}`, obj);
+    template = template.replaceAll(`{{index}}`, obj);
     return template;
+}
+
+function timeToMemorize() {
+    setTimeout(hideBoard, 10000);
+    }
+
+function hideBoard () {
+//    board.innerHTML = board.innerHTML.replaceAll(`${TILE_CLASS}`,`${TILE_CLASS + ' ' + HIDDEN_CLASS}`);
+board.querySelectorAll('.'+TILE_CLASS). forEach((el) => el.classList.add(HIDDEN_CLASS));
+}
+
+function win() {
+    board.innerHTML = WIN_TEMPLATE.innerHTML;
+    removeListeners();
+}
+
+function removeListeners() {
+    board.removeEventListener('click', onTileClick);
+    board.removeEventListener('click', onHardTileClick);
 }
