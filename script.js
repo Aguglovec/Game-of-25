@@ -4,88 +4,85 @@ const TILE_CLASS = 'tile';
 const START_BTN_CLASS = 'startBtn';
 const HIDDEN_CLASS = 'hidden';
 const WRONG_CLASS = 'wrong';
-const TILE_TEMPLATE = document.getElementById('tileTemplate').innerHTML;
-const WIN_TEMPLATE = document.querySelector('#winTemplate');
-const startEasy = document.getElementById('startEasy');
-const startNornal = document.getElementById('startNornal');
-const startHard = document.getElementById('startHard');
-const board = document.getElementById('board');
 
+const TILE_TEMPLATE = document.querySelector('#tileTemplate').innerHTML;
+const WIN_TEMPLATE = document.querySelector('#winTemplate').innerHTML;
+const startEasy = document.querySelector('#startEasy');
+const startNornal = document.querySelector('#startNornal');
+const startHard = document.querySelector('#startHard');
+const board = document.querySelector('#board');
+
+const MEMORIZE_TIME = 5000;
+const DELAY_ON_WRONG = 500;
 const TILES = 25;
-const DELAY = 1000;
 const tilesArr = [];
 let tileCounter = 1;
-
+let hardMode = false;
+let startTime = 0;
 
 startEasy.addEventListener('click', onEasyStartClick);
 startNornal.addEventListener('click', onNormalStartClick);
 startHard.addEventListener('click', onHardStartClick);
 
 
-function onEasyStartClick() {
-    removeListeners();
-    shuffleBord();
-    renderBoard();
+function onEasyStartClick () {
+    startSequense();
     board.addEventListener('click', onTileClick);
-
+    startTimer();
 }
 
-function onNormalStartClick() {
-    removeListeners();
-    shuffleBord();
-    renderBoard();
-    timeToMemorize();
+function onNormalStartClick () {
+    startSequense();
+    setTimeout(hideBoard, MEMORIZE_TIME);
     setTimeout(() =>
-    board.addEventListener('click', onTileClick),DELAY);    
+    board.addEventListener('click', onTileClick), MEMORIZE_TIME);
+    setTimeout(startTimer, MEMORIZE_TIME);    
 }
 
-function onHardStartClick() {
-    removeListeners();
-    shuffleBord();
-    renderBoard();
-    timeToMemorize();
-    setTimeout(() =>
-    board.addEventListener('click', onHardTileClick),DELAY);    
-  
+function onHardStartClick () {
+    onNormalStartClick();
+    hardMode = true; 
 }
 
 
 function onTileClick (e) {
     if (e.target.classList.contains(TILE_CLASS)) {
-        const tileClicked = e.target;
-        if (+tileClicked.id === tileCounter) {
-            tileClicked.classList.toggle(HIDDEN_CLASS);
-            tileCounter ++;
-        }
-        if (+tileClicked.id > tileCounter) {
-            tileClicked.classList.toggle(WRONG_CLASS);
-            setTimeout(()=> tileClicked.classList.toggle(WRONG_CLASS), 500);
-        }
-        if (tileCounter === TILES + 1) {
-            win();
-        }
+        // const tileClicked = e.target;
+        checkTile(e.target);
     }
 }
 
-function onHardTileClick (e) {
-    if (e.target.classList.contains(TILE_CLASS)) {
-        const tileClicked = e.target;
-        if (+tileClicked.id === tileCounter) {
-            tileClicked.classList.toggle(HIDDEN_CLASS);
-            tileCounter++;
-        }
-        if (+tileClicked.id > tileCounter) {
-            tileClicked.classList.toggle(HIDDEN_CLASS);
+function checkTile(tileClicked) {
+    if (+tileClicked.id === tileCounter) {
+        tileClicked.classList.toggle(HIDDEN_CLASS);
+        tileCounter ++;
+    }
+    if (+tileClicked.id > tileCounter) {
+        tileClicked.classList.toggle(HIDDEN_CLASS);
+        tileClicked.classList.toggle(WRONG_CLASS);
+        setTimeout(()=> tileClicked.classList.toggle(HIDDEN_CLASS), DELAY_ON_WRONG);
+        setTimeout(()=> tileClicked.classList.toggle(WRONG_CLASS), DELAY_ON_WRONG);
+        if (hardMode) {
             tileCounter = 1;
-            setTimeout(hideBoard,500);
+            setTimeout(hideBoard, DELAY_ON_WRONG); 
         }
-        
-        if (tileCounter === TILES + 1) {
-            win();
-        }
+    }
+    if (tileCounter === TILES + 1) {
+        win();
     }
 }
 
+function startSequense () {
+    hardMode = false;
+    resetTimer();
+    removeTileListeners();
+    shuffleBord();
+    renderBoard();
+}
+
+function removeTileListeners () {
+    board.removeEventListener('click', onTileClick);
+}
 
 function shuffleBord() {
     tileCounter = 1;
@@ -116,34 +113,46 @@ function randomArr (max) {
 // }
 
 
-function renderBoard() {
+function renderBoard () {
     board.innerHTML = tilesArr.map(generateTileHtml).join('\n');
 }
 
 function generateTileHtml (tile) {
-    return interpolate(TILE_TEMPLATE, tile);
+    return interpolate(TILE_TEMPLATE, `{{index}}`, tile);
 }
 
-function interpolate(template, obj) {
-    template = template.replaceAll(`{{index}}`, obj);
+function interpolate (template,marker,obj) {
+    template = template.replaceAll(marker, obj);
     return template;
 }
-
-function timeToMemorize() {
-    setTimeout(hideBoard, DELAY);
-    }
 
 function hideBoard () {
 //    board.innerHTML = board.innerHTML.replaceAll(`${TILE_CLASS}`,`${TILE_CLASS + ' ' + HIDDEN_CLASS}`);
 board.querySelectorAll('.'+TILE_CLASS). forEach((el) => el.classList.add(HIDDEN_CLASS));
 }
 
-function win() {
-    board.innerHTML = WIN_TEMPLATE.innerHTML;
-    removeListeners();
+function win () {
+    board.innerHTML = interpolate(WIN_TEMPLATE,'{{time}}', stoptime());
+    removeTileListeners();
+    }
+
+
+function startTimer () {
+    startTime =  Date.now();
 }
 
-function removeListeners() {
-    board.removeEventListener('click', onTileClick);
-    board.removeEventListener('click', onHardTileClick);
+function resetTimer() {
+    
+}
+
+function stoptime() {
+let time = Date.now() - startTime;
+let ms = time % 1000;
+let s = Math.floor(time/1000) % 60;
+let m = Math.floor(time/60000);
+if (m===0) {
+    return `${s}.${ms} sec`
+
+}
+return `${m} min ${s}.${ms} sec`
 }

@@ -1,10 +1,8 @@
 body {
   text-align: center;
-  
 }
 
 .container {
-
     display: flex;
     flex-direction: column; 
     flex-wrap: wrap;
@@ -18,7 +16,7 @@ body {
     width: 400px;
     height: 400px;
     /*position: relative;*/
-   margin: auto;
+    margin: auto;
    /* margin-top: 50px; */
     background-color: #f3f5c6;
     /* width: 90%; */
@@ -28,7 +26,7 @@ body {
     justify-content: center;
     align-items: center;
     align-content: center;
-    box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.5);
+    box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.3);
     border-radius: 10px;
 
     /*  position: absolute;
@@ -39,7 +37,6 @@ body {
 
 
 .tile {
- 
     width: 16%;
     height: 16%;
     margin: 1.5%;
@@ -50,8 +47,8 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 48px;
-    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
-    border-radius: 5px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
 }
 
 .hidden {
@@ -63,6 +60,15 @@ body {
   background-color: indianred;
 }
 
+.big {
+
+  font-size: 200%;
+  /* font-weight: bold; */
+}
+
+.red {
+  color: red;
+}
 .startBtn {
     width: 350px;
     height: 50px;
