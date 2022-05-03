@@ -34,8 +34,7 @@ function onEasyStartClick () {
 function onNormalStartClick () {
     startSequense();
     setTimeout(hideBoard, MEMORIZE_TIME);
-    setTimeout(() =>
-    board.addEventListener('click', onTileClick), MEMORIZE_TIME);
+    setTimeout(() => board.addEventListener('click', onTileClick), MEMORIZE_TIME);
     setTimeout(startTimer, MEMORIZE_TIME);    
 }
 
@@ -44,13 +43,12 @@ function onHardStartClick () {
     hardMode = true; 
 }
 
-
 function onTileClick (e) {
     if (e.target.classList.contains(TILE_CLASS)) {
-        // const tileClicked = e.target;
         checkTile(e.target);
     }
 }
+
 
 function checkTile(tileClicked) {
     if (+tileClicked.id === tileCounter) {
@@ -58,10 +56,7 @@ function checkTile(tileClicked) {
         tileCounter ++;
     }
     if (+tileClicked.id > tileCounter) {
-        tileClicked.classList.toggle(HIDDEN_CLASS);
-        tileClicked.classList.toggle(WRONG_CLASS);
-        setTimeout(()=> tileClicked.classList.toggle(HIDDEN_CLASS), DELAY_ON_WRONG);
-        setTimeout(()=> tileClicked.classList.toggle(WRONG_CLASS), DELAY_ON_WRONG);
+        tileIsWrong(tileClicked);
         if (hardMode) {
             tileCounter = 1;
             setTimeout(hideBoard, DELAY_ON_WRONG); 
@@ -72,9 +67,16 @@ function checkTile(tileClicked) {
     }
 }
 
+function tileIsWrong (tileClicked) {
+    tileClicked.classList.toggle(HIDDEN_CLASS);
+    tileClicked.classList.toggle(WRONG_CLASS);
+    setTimeout(()=> tileClicked.classList.toggle(HIDDEN_CLASS), DELAY_ON_WRONG);
+    setTimeout(()=> tileClicked.classList.toggle(WRONG_CLASS), DELAY_ON_WRONG);
+}
+
+
 function startSequense () {
     hardMode = false;
-    resetTimer();
     removeTileListeners();
     shuffleBord();
     renderBoard();
@@ -132,7 +134,7 @@ board.querySelectorAll('.'+TILE_CLASS). forEach((el) => el.classList.add(HIDDEN_
 }
 
 function win () {
-    board.innerHTML = interpolate(WIN_TEMPLATE,'{{time}}', stoptime());
+    board.innerHTML = interpolate(WIN_TEMPLATE,'{{time}}', stopTimer());
     removeTileListeners();
     }
 
@@ -141,11 +143,7 @@ function startTimer () {
     startTime =  Date.now();
 }
 
-function resetTimer() {
-    
-}
-
-function stoptime() {
+function stopTimer() {
 let time = Date.now() - startTime;
 let ms = time % 1000;
 let s = Math.floor(time/1000) % 60;
