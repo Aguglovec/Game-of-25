@@ -1,0 +1,38 @@
+.tile {
+    width: 16%;
+    height: 16%;
+    margin: 2%;
+    background-color: rgba(80, 143, 80, 0.692);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    user-select: none;
+}
+
+
+.tile:hover {
+  background-color: rgba(80, 143, 80, 0.865);
+}
+
+.hidden {
+    font-size: 0;
+    background-color: rgba(141, 177, 141, 0.589); 
+  }
+
+.wrong,
+.wrong:hover {
+  background-color: indianred;
+}
+
+.done,
+.done:hover {
+  background-color: rgba(141, 177, 141, 0.152); 
+  color: #00000028;
+}
+
+/* .done:hover {
+  background-color: rgba(141, 177, 141, 0.366); 
+} */

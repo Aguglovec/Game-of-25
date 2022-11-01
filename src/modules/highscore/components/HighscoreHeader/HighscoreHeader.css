@@ -1,0 +1,24 @@
+.diffTile {
+    width: fit-content;
+    height: 10%;
+    margin: 1%;
+    padding: 1%;
+    background-color: rgba(50, 60, 50, 0.692);
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 33px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    user-select: none;
+}
+
+.diffTile:hover {
+  background-color: rgba(80, 143, 80, 0.865);
+}
+
+.red,
+.red:hover {
+  background-color: indianred;
+}

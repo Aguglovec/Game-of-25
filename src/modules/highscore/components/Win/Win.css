@@ -1,0 +1,19 @@
+.big {
+    height: 100vh;
+    width: 100vw;
+    z-index: 1000; 
+    background: rgba(0, 0, 0, 0.92);
+}
+
+.screenCenter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

@@ -1,0 +1,10 @@
+.list-item {
+    color: rgb(213, 210, 210);
+
+    cursor: pointer;
+    padding: 10px 20px;
+    margin: 5px 0;
+    font-size: 20px;
+
+}
+
